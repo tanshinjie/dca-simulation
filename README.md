@@ -27,57 +27,52 @@ This project simulates Dollar Cost Averaging (DCA) strategies for S&P 500 invest
    ```
 
 4. **Set up environment variables**:
-   - Copy `.env.example` to `.env`
+   - Create a `.env` file in the project root.
    - Get a FRED API key from: https://fred.stlouisfed.org/docs/api/api_key.html
-   - Update the `.env` file with your API key:
+   - Add your API key to the `.env` file:
      ```
      FRED_API_KEY=your_actual_api_key_here
      ```
 
 ## Usage
 
-### Download CPI Data (Optional)
-If you want to download fresh CPI data:
-```bash
-python download_cpi.py
-```
+To run the simulation and generate outputs:
 
-### Run the Simulation
 ```bash
-python main.py
+python -m src.download_data
+python -m src.process_data
+python -m src.visualise_data
 ```
 
 This will:
-- Fetch S&P 500 data from Yahoo Finance
-- Load CPI data (from local file if available, otherwise from FRED API)
+- Download S&P 500 and CPI data (if not already present in `data/`)
 - Run DCA simulations for all investor cohorts
 - Generate charts and statistical summaries
-- Save results to `summary.txt`
+- Save results to `output/`
 
-## Files
+## Project Structure
 
-- `main.py` - Main simulation script
-- `download_cpi.py` - Script to download CPI data from FRED
-- `cpi_data.csv` - Local CPI data file (if available)
-- `.env` - Environment variables (not tracked in git)
-- `.env.example` - Template for environment variables
-- `requirements.txt` - Python dependencies
-- `result.txt` - Simulation output (generated)
-- `summary.txt` - Summary statistics (generated)
-
-## Security
-
-- API keys are stored in environment variables and never committed to the repository
-- The `.env` file containing sensitive information is ignored by git
-- Use the `.env.example` template to set up your own environment variables
-
-## Configuration
-
-You can modify the following parameters in `main.py`:
-- `START_YEARS` - List of investor cohort start years
-- `END_DATE` - End date for all simulations
-- `MONTHLY_CONTRIBUTION` - Monthly investment amount
-- `ADJUST_FOR_INFLATION` - Enable/disable inflation adjustment
+```
+.env
+.gitignore
+README.md
+requirements.txt
+venv/
+src/
+├── config.py
+├── download_data.py
+├── process_data.py
+├── download_cpi.py
+└── visualise_data.py
+data/
+├── cpi_data.csv
+└── sp500_data.csv
+output/
+├── portfolio_history.json
+├── simulation_results.csv
+├── summary.csv
+└── summary.html
+```
 
 ## Output
 
@@ -87,3 +82,17 @@ The simulation generates:
 - Portfolio value accumulation charts
 - CAGR distribution plots
 - Statistical summaries and performance highlights
+
+### Example Plot
+
+![Example Plot](example.png)
+
+### Summary Table Example
+
+![Summary Table Example](summary.png)
+
+## Security
+
+- API keys are stored in environment variables and never committed to the repository
+- The `.env` file containing sensitive information is ignored by git
+- Use the `.env.example` template to set up your own environment variables
